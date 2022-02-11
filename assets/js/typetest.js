@@ -281,10 +281,13 @@ var _timer = document.getElementById("timer")
 var _primary = document.getElementById("primary")
 var _secondary = document.getElementById("secondary")
 var _success = document.getElementById("success")
-var _error = document.getElementById("errors")
+var _error = document.getElementById("error")
 var _total = document.getElementById("total")
 var _start = document.getElementById("start")
 var _stop = document.getElementById("stop")
+var _difficulty = document.getElementById("hard")
+var _hidden = document.getElementById("hidden")
+var _container = document.getElementById("score-container")
 
 // Set booleans that control game & timer.
 var game_state = false;
@@ -293,7 +296,7 @@ var hard_diff = false;
 // Define our timer object and set a countdown
 var timer;
 var countdown = 30;
-var time = countdown;
+var time = countdown + 1;
 
 // Set game score variables to 0;
 var success = 0;
@@ -314,7 +317,7 @@ function startTest() {
     if (!game_state) {
 
         // Set the word list based on difficulty selected
-        if (document.getElementById("hard").checked) {
+        if (_difficulty.checked) {
 
             // Shuffle the word list
             hard = shuffleWords(hard);
@@ -340,10 +343,15 @@ function startTest() {
 
         }
 
+        _container.style.display = "block";
+        _hidden.style.display = "none";
+
+        _secondary.innerHTML = "<span class='text-primary' id='blink'>> </span>";
+
         // Set the score dom elements to "0"
         _success.innerHTML = "0";
         _error.innerHTML = "0";
-        _total.innerHTML = "0";
+        _total.innerHTML = "0%";
 
         // Set the scores to 0
         success = 0;
@@ -369,6 +377,7 @@ function startTest() {
         // Enable/disable appropriate buttons
         _start.disabled = true;
         _stop.disabled = false;
+        _difficulty.disabled = true;
 
     } else {
         debug("Cannot start a game that is already started!")
@@ -381,6 +390,8 @@ function stopTest() {
 
         // If total is zero set primary text and timer to the default
         _primary.innerHTML = "TYPETEST.JS";
+        _secondary.innerHTML = "> press enter...";
+        _hidden.style.display = "block";
 
         // Display CPM by dividing succesfful inputs by timer length, multiplied by 60
         _timer.innerHTML = (((success / countdown) * 60) / 5 + " WPM")
@@ -408,6 +419,8 @@ function stopTest() {
         // Enable/disable appropriate buttons
         _start.disabled = false;
         _stop.disabled = true;
+        _difficulty.disabled = false;
+
 
     } else {
         debug("Cannot stop a game that isnt started!")
@@ -437,59 +450,64 @@ function checkKey(key) {
     // Only match keyboard input if game is started
     if (game_state) {
 
-        // Get the current word and letter based on index [word, letter]
-        current_word = list[index[0]].split("");
-        current_letter = current_word[index[1]];
+        if (key == "Enter") {
+            stopTest();
+        } else {
+            // Get the current word and letter based on index [word, letter]
+            current_word = list[index[0]].split("");
+            current_letter = current_word[index[1]];
 
-        // Log current letter & key pressed
-        debug("Required: " + current_letter + ", : " + key)
+            // Log current letter & key pressed
+            debug("Required: " + current_letter + ", : " + key)
 
-        // If the keyboard input matches current_letter
-        if (key == current_letter) {
+            // If the keyboard input matches current_letter
+            if (key.toLowerCase() == current_letter.toLowerCase()) {
 
-            // Increment score and show it in dom element
-            success++;
-            _success.innerHTML = success;
+                // Increment score and show it in dom element
+                success++;
+                _success.innerHTML = success;
 
-            // Check if we have reached the word length
-            if (parseInt(index[1]) + 1 == current_word.length) {
+                // Check if we have reached the word length
+                if (parseInt(index[1]) + 1 == current_word.length) {
 
-                // Remove the first word from the list
-                list.shift();
+                    // Remove the first word from the list
+                    list.shift();
 
-                // Set the new current word and letter
-                current_word = list[0];
-                current_letter = current_word[0];
+                    // Set the new current word and letter
+                    current_word = list[0];
+                    current_letter = current_word[0];
 
-                // Reset the index
-                index = [0, 0];
+                    // Reset the index
+                    index = [0, 0];
 
-                // Set progress and show in dom element
-                progress = current_word;
-                _primary.innerHTML = progress;
+                    // Set progress and show in dom element
+                    progress = current_word;
+                    _primary.innerHTML = progress;
+                    _secondary.innerHTML = "<span class='text-primary' id='blink'>> </span>";
+
+                } else {
+
+                    // Increment the index
+                    index = [index[0], (parseInt(index[1]) + 1)]
+
+                    // Update the progress and show it in dom element
+                    progress = progress.substring(1);
+                    _secondary.innerHTML = _secondary.innerHTML + current_letter;
+
+                }
 
             } else {
 
-                // Increment the index
-                index = [index[0], (parseInt(index[1]) + 1)]
-
-                // Update the progress and show it in dom element
-                progress = progress.substring(1);
-                _primary.innerHTML = progress;
+                // Increment errors and show it in dom element
+                error++;
+                _error.innerHTML = error;
 
             }
 
-        } else {
-
-            // Increment errors and show it in dom element
-            error++;
-            _error.innerHTML = error;
-
+            // Update total keystrokes
+            total = success + error;
+            _total.innerHTML = (Math.round((success / total) * 100)) + "%";
         }
-
-        // Update total keystrokes
-        total = success + error;
-        _total.innerHTML = (Math.round((success / total) * 100)) + "%";
 
     }
 
@@ -517,7 +535,7 @@ function updateTimer() {
         stopTest();
 
         // Set time left to the defined countdown
-        time = countdown;
+        time = countdown + 1;
 
     }
 }
@@ -527,6 +545,8 @@ function stopTimer() {
 
     // Clear the setInterval, so the timer stops being called
     timer = clearInterval(timer);
+
+    time = countdown + 1;
 
 }
 
