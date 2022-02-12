@@ -288,6 +288,7 @@ var _stop = document.getElementById("stop")
 var _difficulty = document.getElementById("hard")
 var _hidden = document.getElementById("hidden")
 var _container = document.getElementById("score-container")
+var _border = document.getElementById("border")
 
 // Set booleans that control game & timer.
 var game_state = false;
@@ -379,6 +380,10 @@ function startTest() {
         _stop.disabled = false;
         _difficulty.disabled = true;
 
+        // Set border to primary
+        _border.classList.remove("border-success", "border-danger", "border-light");
+        _border.classList.add("border-primary");
+
     } else {
         debug("Cannot start a game that is already started!")
     }
@@ -394,7 +399,7 @@ function stopTest() {
         _hidden.style.display = "block";
 
         // Display CPM by dividing succesfful inputs by timer length, multiplied by 60
-        _timer.innerHTML = (((success / countdown) * 60) / 5 + " WPM")
+        _timer.innerHTML = (((success / countdown) * 60) / 5 + "WPM")
 
         // Set the scores to 0 
         success = 0;
@@ -421,6 +426,10 @@ function stopTest() {
         _stop.disabled = true;
         _difficulty.disabled = false;
 
+        // Set border to default
+        _border.classList.remove("border-success", "border-danger");
+        _border.classList.add("border-light");
+
 
     } else {
         debug("Cannot stop a game that isnt started!")
@@ -436,11 +445,13 @@ function shuffleWords(unshuffled) {
         .map(({ value }) => value);
 }
 
-// Create keyDownListener to track keyboard input
-function setKeyDownListener() {
+// Create various listeners
+function setListeners() {
+
+    // Key down listener
     window.addEventListener(
         "keydown",
-        function (event) { checkKey(event.key) }
+        function(event) { checkKey(event.key) }
     )
 }
 
@@ -450,9 +461,15 @@ function checkKey(key) {
     // Only match keyboard input if game is started
     if (game_state) {
 
+        // Stop the game if you press enter again
         if (key == "Enter") {
+
+            // Stop test and reset timer
+            debug("Stopping test...")
             stopTest();
+
         } else {
+
             // Get the current word and letter based on index [word, letter]
             current_word = list[index[0]].split("");
             current_letter = current_word[index[1]];
@@ -461,7 +478,11 @@ function checkKey(key) {
             debug("Required: " + current_letter + ", : " + key)
 
             // If the keyboard input matches current_letter
-            if (key.toLowerCase() == current_letter.toLowerCase()) {
+            if (key == current_letter) {
+
+                // Set the border color to success (correct)
+                _border.classList.remove("border-light", "border-danger");
+                _border.classList.add("border-success");
 
                 // Increment score and show it in dom element
                 success++;
@@ -471,7 +492,13 @@ function checkKey(key) {
                 if (parseInt(index[1]) + 1 == current_word.length) {
 
                     // Remove the first word from the list
-                    list.shift();
+                    var replace = list.shift();
+
+                    _secondary.innerHTML = _secondary.innerHTML + current_letter;
+
+                    // Add that word to the end of the list
+                    list.pop(replace)
+                    debug(replace)
 
                     // Set the new current word and letter
                     current_word = list[0];
@@ -497,6 +524,10 @@ function checkKey(key) {
                 }
 
             } else {
+
+                // Set the border to danger (error)
+                _border.classList.remove("border-light", "border-success");
+                _border.classList.add("border-danger");
 
                 // Increment errors and show it in dom element
                 error++;
@@ -554,7 +585,7 @@ function stopTimer() {
 function startTimer() {
 
     // Set the interval to run updateTimer()
-    timer = setInterval(function () { updateTimer() }, 1000);
+    timer = setInterval(function() { updateTimer() }, 1000);
 
     // Manually update the timer
     updateTimer();
@@ -566,5 +597,5 @@ function debug(message) {
     if (debug_bool) { console.log("[Debug]: " + message); }
 }
 
-// Intitalize our keystroke listener
-setKeyDownListener();
+// Intitalize our listeners
+setListeners();

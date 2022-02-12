@@ -11,49 +11,56 @@
     <link rel="stylesheet" href="assets/css/Footer.css">
     <link rel="stylesheet" href="assets/css/Highlight.css">
     <link rel="stylesheet" href="assets/css/Navigation.css">
+    <link rel="stylesheet" href="assets/css/Styles.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
-        <div class="container"><a class="navbar-brand text-uppercase" href="https://jaybitdesign.github.io/">TYPETEST.JS</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Start</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://jaybitdesign.github.io/">My Portfolio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://github.com/jaybitdesign">Github</a></li>
-                </ul>
+
+    <section class="shadow-sm mb-4 pb-5 highlight-clean" style="background: url('assets/img/marble-1.jpg'); background-repeat: no-repeat; background-size: auto;">
+        <nav class="navbar navbar-light navbar-expand-lg navigation-clean bg-transparent">
+            <div class="container">
+                <a class="navbar-brand text-uppercase" href="https://jaybitdesign.github.io/">TYPETEST.JS</a>
+                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link text-dark" href="#">Start</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://jaybitdesign.github.io/">My Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="https://github.com/jaybitdesign">Github</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-    <section class="highlight-clean">
-        <div class="container py-4">
+        </nav>
+        <div id="border" class="container bg-white mb-5 py-5 border rounded border-light border-5">
             <div class="intro">
-                <h2 class="display-1 text-capitalize mb-0" id="primary">TypeTest.js</h2>
-                <h1 class="display-2 text-lowercase text-black-50 mb-5" id="secondary">&gt; Press Enter...</h1>
+                <h2 class="display-1 mb-0" id="primary">TypeTest.js</h2>
+                <h1 style="margin-left:-4rem" class="display-2 text-lowercase text-black-50 mb-5" id="secondary">> Press Enter...</h1>
                 <div class="text-start">
-                    <button id="stop" disabled onclick="stopTest();" class="btn btn-light btn-lg font-monospace border rounded-0 border-light px-4 mx-2" type="button">stop</button>
+                    <button id="stop" disabled onclick="stopTest();" class="btn btn-danger btn-lg font-monospace border rounded-0 border-danger px-4 mx-2" type="button">stop</button>
                     <button id="start" onclick="startTest();" class="btn btn-primary btn-lg font-monospace border rounded-0 border-primary px-3 mx-2" type="button">start test</button>
                 </div>
-                
                 <div class="px-3 pb-2 pt-3">
-                    <div class="form-check"><input id="hard" class="form-check-input" type="checkbox" name="hard" /><label class="form-check-label font-monospace" for="hard">Latin Words (Hard Mode)</label></div>
+                    <div class="form-check"><input id="hard" class="form-check-input" type="checkbox" name="hard" />
+                        <label class="form-check-label font-monospace" for="hard">Latin Words
+                            <span class="text-danger">(Hard Mode)</span>
+                        </label>
+                    </div>
                 </div>
-                
                 <div class="text-start justify-content-start align-items-center pt-3" id="score-container" style="display: none;">
                     <div class="d-flex justify-content-start align-items-start">
-                        <div class="text-center mx-2 pt-2">
+                        <div class="text-center mx-2 pt-2 px-2">
                             <p class="font-monospace text-center text-primary mb-0 h1" id="timer">30</p>
-                            <p class="lead mx-2 mb-2">time</p>
+                            <p class="lead mx-2 mb-2">time left</p>
                         </div>
-                        <div class="text-center mx-2 pt-2">
+                        <div class="text-center mx-2 pt-2 px-2">
                             <p class="font-monospace text-center mb-0 h1 text-success" id="success">0</p>
                             <p class="lead mx-2 mb-2">correct</p>
                         </div>
-                        <div class="text-center mx-2 pt-2">
+                        <div class="text-center mx-2 pt-2 px-2">
                             <p class="font-monospace text-center mb-0 h1 text-danger" id="error">0</p>
                             <p class="lead mx-2 mb-2">wrong</p>
                         </div>
-                        <div class="text-center mx-2 pt-2">
+                        <div class="text-center mx-2 pt-2 px-2">
                             <p class="font-monospace text-center mb-0 h1 text-warning" id="total">0%</p>
                             <p class="lead mx-2 mb-2">accuracy</p>
                         </div>
@@ -70,19 +77,19 @@
             </div>
             <div class="row justify-content-center features py-3">
                 <div class="col-sm-6 col-md-4 item py-3">
-                    <div class="border rounded-0 border-white shadow-sm box mb-0 bg-white pb-2 pt-4"><i class="fas fa-crosshairs icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
+                    <div style="background: url('assets/img/marble-1.jpg'); background-repeat: no-repeat; background-size: auto;" class="border rounded-0 border-light shadow-sm box mb-0 bg-light pb-2 pt-4"><i class="fas fa-crosshairs icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
                         <h2 class="text-uppercase name pt-2">Accuracy</h2>
                         <p class="lead pb-2">Reduce typing mistakes</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 item py-3">
-                    <div class="border rounded-0 border-white shadow-sm box mb-0 bg-white pb-2 pt-4"><i class="fas fa-clock icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
+                    <div style="background: url('assets/img/marble-1.jpg'); background-repeat: no-repeat; background-size: auto;" class="border bg-light rounded-0 border-light shadow-sm box mb-0 pb-2 pt-4"><i class="fas fa-clock icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
                         <h2 class="text-uppercase name pt-2">Speed</h2>
                         <p class="lead pb-2">Increase speed &amp; WPM</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 item py-3">
-                    <div class="border rounded-0 border-white shadow-sm box mb-0 bg-white pb-2 pt-4"><i class="fas fa-street-view icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
+                    <div style="background: url('assets/img/marble-1.jpg'); background-repeat: no-repeat; background-size: auto;" class="border bg-light rounded-0 border-light shadow-sm box mb-0 pb-2 pt-4"><i class="fas fa-street-view icon mb-3" style="color: var(--bs-blue);font-size: 85px;"></i>
                         <h2 class="text-uppercase name pt-2">efficiency&nbsp;<br></h2>
                         <p class="lead pb-2">Boost your productivity</p>
                     </div>
